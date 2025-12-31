@@ -11,7 +11,7 @@ if not EMAIL or not PASSWORD:
 # ========= 配置区 =========
 LOGIN_URL = "https://greathost.es/login"
 SERVER_ID = "9ad3a329-4a2f-497a-8ae7-63e5e2bfda07"
-SERVER_URL = f"https://greathost.es/server/{SERVER_ID}"
+SERVER_URL = f"https://greathost.es/contracts/{SERVER_ID}"
 
 
 
@@ -79,7 +79,7 @@ def main():
 
         # ========== 6️⃣ 点击续期 ==========
         renew_btn = page.wait_for_selector(
-            "button:has-text('Renew +12')",
+            "button:has-text('Renew +12 hours')",
             timeout=20_000
         )
 
