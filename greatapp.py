@@ -95,18 +95,18 @@ def renew_account(p, acc):
         page.wait_for_timeout(5000)
 
         print("🎉 续期已触发")
-        tg_notify(f"✅ VPS 续期成功\n账号：{masked}")
+        tg_notify(f"✅ GREATVPS 续期成功\n账号：{masked}")
         return True
 
     except PlaywrightTimeoutError:
         print("⏱ 页面超时")
-        tg_notify(f"❌ VPS 续期失败（超时）\n账号：{masked}")
+        tg_notify(f"❌ GREATVPS 续期失败（超时）\n账号：{masked}")
         return False
 
     except Exception:
         print("❌ 执行异常")
         traceback.print_exc()
-        tg_notify(f"❌ VPS 续期失败（异常）\n账号：{masked}")
+        tg_notify(f"❌ GREATVPS 续期失败（异常）\n账号：{masked}")
         return False
 
     finally:
