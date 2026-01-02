@@ -1,0 +1,50 @@
+name: great Renew 
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 每 6 天执行一次（UTC）
+    - cron: "0 0 */6 * *"
+
+jobs:
+  renew:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: ⬇️ Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: 📦 Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install playwright requests
+          playwright install chromium
+
+      - name: 🔐 Run renew script
+        env:
+          # 多账号配置（一行一个账号）
+          # email|password|server_id
+          GH_ACCOUNTS: ${{ secrets.GH_ACCOUNTS }}
+
+          # Telegram 通知
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+
+        run: |
+          python greatapp.py
+
+      # ====== 防 GitHub Actions 停跑心跳 ======
+      - name: 💓 Commit heartbeat
+        if: always()
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add time.txt || true
+          git commit -m "chore: heartbeat $(date -u '+%Y-%m-%d %H:%M:%S')" || true
+          git push || true
